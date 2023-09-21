@@ -10,9 +10,10 @@ import {
   TextField
 } from '@mui/material';
 
-export const SettingsPassword = () => {
+export const SettingsPassword = ({ auth }) => {
   const [values, setValues] = useState({
-    password: '',
+    oldPassword: '',
+    newPassword: '',
     confirm: ''
   });
 
@@ -27,10 +28,31 @@ export const SettingsPassword = () => {
   );
 
   const handleSubmit = useCallback(
-    (event) => {
+    async (event) => {
       event.preventDefault();
+
+      if (values.newPassword !== values.confirm) {
+        console.error('New password and confirm password do not match');
+        return;
+      }
+
+      try {
+        // Reauthenticate the user with their current password
+        const credentials = auth.EmailAuthProvider.credential(
+          auth.currentUser.email,
+          values.oldPassword
+        );
+        await auth.currentUser.reauthenticateWithCredential(credentials);
+
+        // Update the password
+        await auth.currentUser.updatePassword(values.newPassword);
+
+        console.log('Password updated successfully');
+      } catch (error) {
+        console.error('Error updating password:', error.message);
+      }
     },
-    []
+    [auth, values.newPassword, values.confirm]
   );
 
   return (
@@ -48,15 +70,23 @@ export const SettingsPassword = () => {
           >
             <TextField
               fullWidth
-              label="Password"
-              name="password"
+              label="Old Password"
+              name="oldPassword"
               onChange={handleChange}
               type="password"
-              value={values.password}
+              value={values.oldPassword}
             />
             <TextField
               fullWidth
-              label="Password (Confirm)"
+              label="New Password"
+              name="newPassword"
+              onChange={handleChange}
+              type="password"
+              value={values.newPassword}
+            />
+            <TextField
+              fullWidth
+              label="New Password (Confirm)"
               name="confirm"
               onChange={handleChange}
               type="password"
@@ -66,7 +96,7 @@ export const SettingsPassword = () => {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+          <Button variant="contained" type="submit">
             Update
           </Button>
         </CardActions>

@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
+import PropTypes from "prop-types";
+import { format } from "date-fns";
 import {
   Avatar,
   Box,
@@ -12,10 +12,11 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography
-} from '@mui/material';
-import { Scrollbar } from 'src/components/scrollbar';
-import { getInitials } from 'src/utils/get-initials';
+  Typography,
+  Button,
+} from "@mui/material";
+import { Scrollbar } from "src/components/scrollbar";
+import { getInitials } from "src/utils/get-initials";
 
 export const CustomersTable = (props) => {
   const {
@@ -29,7 +30,7 @@ export const CustomersTable = (props) => {
     // onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = []
+    selected = [],
   } = props;
 
   // const selectedSome = (selected.length > 0) && (selected.length < items.length);
@@ -42,58 +43,37 @@ export const CustomersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  Product Name
-                </TableCell>
-                <TableCell>
-                  Price
-                </TableCell>
-                <TableCell>
-                  Rating
-                </TableCell>
-                <TableCell>
-                  Total Ratings
-                </TableCell>
+                <TableCell>Product Name</TableCell>
+                {props.showSaveItem && <TableCell>Action</TableCell>}
+                <TableCell>Price</TableCell>
+                <TableCell>Rating</TableCell>
+                <TableCell>Total Ratings</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {console.log("items",items)}
-              {items && items.map((product) => {
-                const isSelected = selected.includes(product.id);
-                // const createdAt = format(product.createdAt, 'dd/MM/yyyy');
+              {console.log("items", items)}
+              {items &&
+                items.map((product) => {
+                  const isSelected = selected.includes(product.id);
+                  // const createdAt = format(product.createdAt, 'dd/MM/yyyy');
 
-                return (
-                  <TableRow
-                    hover
-                    key={product.id}
-                    selected={isSelected}
-                  >
-                    <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <Avatar src={product.image}>
-                          {/* {getInitials(product.name)} */}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {product.title}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>
-                      {product.price && product.price.value}
-                    </TableCell>
-                    <TableCell>
-                      {product.rating}
-                    </TableCell>
-                    <TableCell>
-                      {product.ratings_total}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                  return (
+                    <TableRow hover key={product.id} selected={isSelected}>
+                      <TableCell>
+                        <Stack alignItems="center" direction="row" spacing={2}>
+                          <Avatar src={product.image}>{/* {getInitials(product.name)} */}</Avatar>
+                          <Typography variant="subtitle2">{product.title}</Typography>
+                        </Stack>
+                      </TableCell>
+                      {props.showSaveItem && <TableCell>
+                        <Button onClick={() => props.saveItem(product)}>Save</Button>
+                      </TableCell>}
+                      <TableCell>{product.price && product.price.value}</TableCell>
+                      <TableCell>{product.rating}</TableCell>
+                      <TableCell>{product.ratings_total}</TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </Box>

@@ -33,7 +33,7 @@ const Page = () => {
   const getBestSellers = async () => {
     // set up the request parameters
     const params = {
-      api_key: "5FC49ABAC8AF4FB6B0F544DA1B24F9F5",
+      api_key: "87F40CBA3677445DBEED9739D15882D3",
       type: "bestsellers",
       amazon_domain: "amazon.com",
       category_id: "bestsellers_electronics",
@@ -58,7 +58,7 @@ const Page = () => {
   const getBestDeals = async () => {
     // set up the request parameters
     const params = {
-      api_key: "5FC49ABAC8AF4FB6B0F544DA1B24F9F5",
+      api_key: "87F40CBA3677445DBEED9739D15882D3",
       type: "deals",
       amazon_domain: "amazon.com",
       category_id: "172282",
@@ -110,7 +110,7 @@ const Page = () => {
         hl: "en-US",
       },
       headers: {
-        'X-RapidAPI-Key': 'b9a04c6a78msh2e2614afc1fe130p155e41jsn5916ea38f713',
+        'X-RapidAPI-Key': 'f7584d2870msh51172e001480583p1dc717jsnc1062d321dbf',
     'X-RapidAPI-Host': 'google-trends8.p.rapidapi.com'
       },
     };

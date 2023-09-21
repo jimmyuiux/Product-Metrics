@@ -9,10 +9,13 @@ import { CustomersSearch } from "src/sections/product/products-search";
 import { applyPagination } from "src/utils/apply-pagination";
 import { publicDecrypt } from "crypto";
 import { ToastContainer, toast } from "react-toastify";
+import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { app } from "../firebase";
 
 const axios = require("axios");
 const now = new Date();
-
+const firestore = getFirestore(app);
+console.log("firestore", firestore);
 let time = 1;
 
 const Page = () => {
@@ -26,6 +29,7 @@ const Page = () => {
     },
     [page, rowsPerPage]
   );
+
   const getData = async (values = {}) => {
     console.log("values", values);
 
@@ -34,7 +38,7 @@ const Page = () => {
     if (values.website == "amazon.com") {
       // set up the request parameters
       const params = {
-        api_key: "5FC49ABAC8AF4FB6B0F544DA1B24F9F5",
+        api_key: "87F40CBA3677445DBEED9739D15882D3",
         type: "search",
         amazon_domain: values.website,
         search_term: values.search_term,
@@ -74,13 +78,24 @@ const Page = () => {
 
       try {
         const response = await axios.request(options);
-        console.log("response of alibaba",response.data)
+        console.log("response of alibaba", response.data);
         const cust = applyPagination(response.data.search_results, page, rowsPerPage);
         setCustomers(cust);
       } catch (error) {
         console.error(error);
       }
     }
+  };
+
+  const saveItem = async (item) => {
+    // Add a new document with a generated ID to the "items" collection
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("user",user)
+    await addDoc(collection(firestore, "Saved_Items"), {
+      ...item,
+      email: user.email,
+    });
   };
 
   const handleRowsPerPageChange = useCallback(
@@ -119,6 +134,8 @@ const Page = () => {
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
               rowsPerPage={rowsPerPage}
+              showSaveItem={true}
+              saveItem={saveItem}
             />
           </Stack>
         </Container>

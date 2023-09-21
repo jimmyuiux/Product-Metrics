@@ -2,6 +2,7 @@ import HomeIcon from '@heroicons/react/24/solid/HomeIcon';
 import CogIcon from '@heroicons/react/24/solid/CogIcon';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import BookmarkIcon from '@heroicons/react/24/solid/BookmarkIcon';
+import ChartPieIcon from '@heroicons/react/24/solid/ChartPieIcon';
 import { SvgIcon } from '@mui/material';
 
 export const items = [
@@ -29,6 +30,15 @@ export const items = [
     icon: (
       <SvgIcon fontSize="small">
         <BookmarkIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Customer Segmentation',
+    path: '/customer-segmentation',
+    icon: (
+      <SvgIcon fontSize="small">
+        <ChartPieIcon />
       </SvgIcon>
     )
   },
